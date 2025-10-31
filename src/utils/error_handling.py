@@ -409,15 +409,22 @@ class ErrorHandler:
             raise
     
     def _clear_gpu_memory(self) -> None:
-        """Clear GPU memory cache."""
+        """Clear GPU memory cache with error handling."""
         if torch.cuda.is_available():
-            torch.cuda.empty_cache()
-            torch.cuda.synchronize()
+            try:
+                torch.cuda.empty_cache()
+                torch.cuda.synchronize()
+                logger.debug("GPU memory cache cleared")
+            except RuntimeError as e:
+                if "CUDA error" in str(e):
+                    logger.error(f"CUDA error during memory cleanup: {e}")
+                    # Don't attempt further CUDA operations if context is corrupted
+                    return
+                else:
+                    raise
             
             # Force garbage collection
             gc.collect()
-            
-            logger.debug("GPU memory cache cleared")
     
     def _get_memory_usage(self) -> Dict[str, float]:
         """Get current memory usage statistics.
