@@ -40,6 +40,11 @@ class ModelStateError(TrainingError):
     pass
 
 
+class CudaMemoryError(TrainingError):
+    """Exception for CUDA memory access errors."""
+    pass
+
+
 class ErrorHandler:
     """Centralized error handling and recovery system."""
     
@@ -226,6 +231,60 @@ class ErrorHandler:
             
         except Exception as recovery_error:
             logger.error(f"Model state recovery failed: {recovery_error}")
+            return False
+    
+    def handle_cuda_memory_error(self, 
+                                model: torch.nn.Module,
+                                error: Exception) -> bool:
+        """Handle CUDA memory access errors.
+        
+        Args:
+            model: Model that encountered the error
+            error: The CUDA error
+            
+        Returns:
+            True if error was handled, False otherwise
+        """
+        logger.error(f"CUDA memory access error detected: {error}")
+        
+        try:
+            # Immediate CUDA cleanup
+            if torch.cuda.is_available():
+                logger.info("Performing emergency CUDA cleanup...")
+                
+                # Clear all CUDA caches
+                torch.cuda.empty_cache()
+                torch.cuda.synchronize()
+                
+                # Reset CUDA context if possible
+                try:
+                    torch.cuda.reset_peak_memory_stats()
+                    logger.info("CUDA memory stats reset")
+                except Exception as reset_error:
+                    logger.warning(f"Could not reset CUDA memory stats: {reset_error}")
+                
+                # Move model to CPU temporarily
+                try:
+                    logger.info("Moving model to CPU for safety...")
+                    model.cpu()
+                    torch.cuda.empty_cache()
+                    
+                    # Move back to CUDA
+                    logger.info("Moving model back to CUDA...")
+                    model.cuda()
+                    torch.cuda.synchronize()
+                    
+                    logger.info("CUDA memory error recovery successful")
+                    return True
+                    
+                except Exception as move_error:
+                    logger.error(f"Failed to move model during CUDA recovery: {move_error}")
+                    return False
+            
+            return False
+            
+        except Exception as recovery_error:
+            logger.error(f"CUDA memory error recovery failed: {recovery_error}")
             return False
     
     def with_retry(self, 

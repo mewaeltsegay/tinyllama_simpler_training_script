@@ -24,7 +24,7 @@ from ..training.distributed import DistributedTrainingManager
 from ..utils.logging import get_logger
 from ..utils.error_handling import (
     ErrorHandler, GracefulShutdownHandler, OutOfMemoryError,
-    with_error_handling, TrainingError
+    with_error_handling, TrainingError, CudaMemoryError
 )
 
 logger = get_logger(__name__)
@@ -339,6 +339,14 @@ class TrainingEngine(BaseTrainingEngine):
             logger.error(f"CUDA out of memory during training step: {e}")
             return self._handle_oom_during_training(batch, english_batch, e)
             
+        except RuntimeError as e:
+            if "CUDA error" in str(e) and "illegal memory access" in str(e):
+                logger.error(f"CUDA illegal memory access detected: {e}")
+                return self._handle_cuda_memory_error(batch, english_batch, e)
+            else:
+                logger.error(f"Runtime error during training step: {e}")
+                raise TrainingError(f"Training step failed: {e}") from e
+            
         except Exception as e:
             logger.error(f"Training step failed: {e}")
             
@@ -350,9 +358,12 @@ class TrainingEngine(BaseTrainingEngine):
                     "step": self.current_step,
                     "batch_size": self.current_batch_size
                 }
-                self.state_manager.create_recovery_checkpoint(
-                    self.model, self.optimizer, self.current_step, error_info
-                )
+                try:
+                    self.state_manager.create_recovery_checkpoint(
+                        self.model, self.optimizer, self.current_step, error_info
+                    )
+                except Exception as checkpoint_error:
+                    logger.error(f"Failed to create recovery checkpoint: {checkpoint_error}")
             
             raise TrainingError(f"Training step failed: {e}") from e
     
@@ -557,6 +568,41 @@ class TrainingEngine(BaseTrainingEngine):
             return self._execute_train_step(smaller_batch, smaller_english_batch)
         except torch.cuda.OutOfMemoryError as retry_error:
             raise OutOfMemoryError(f"Training failed even after batch size reduction: {retry_error}") from retry_error
+    
+    def _handle_cuda_memory_error(self, batch: Dict[str, torch.Tensor], 
+                                 english_batch: Optional[Dict[str, torch.Tensor]],
+                                 error: Exception) -> TrainingMetrics:
+        """Handle CUDA illegal memory access errors.
+        
+        Args:
+            batch: Original training batch
+            english_batch: Optional English batch
+            error: The CUDA error
+            
+        Returns:
+            Training metrics after recovery
+            
+        Raises:
+            CudaMemoryError: If recovery is not possible
+        """
+        logger.warning("Handling CUDA illegal memory access error...")
+        
+        # Attempt CUDA recovery
+        recovery_successful = self.error_handler.handle_cuda_memory_error(self.model, error)
+        
+        if not recovery_successful:
+            raise CudaMemoryError(f"CUDA memory access error could not be recovered: {error}") from error
+        
+        logger.info("CUDA memory error recovery successful, retrying training step...")
+        
+        # Retry training step after recovery
+        try:
+            return self._execute_train_step(batch, english_batch)
+        except RuntimeError as retry_error:
+            if "CUDA error" in str(retry_error):
+                raise CudaMemoryError(f"CUDA error persisted after recovery: {retry_error}") from retry_error
+            else:
+                raise TrainingError(f"Training failed after CUDA recovery: {retry_error}") from retry_error
     
     def _create_smaller_batch(self, batch: Dict[str, torch.Tensor], new_batch_size: int) -> Dict[str, torch.Tensor]:
         """Create a smaller batch from the original batch.

@@ -5,39 +5,39 @@
     "vocab_size": 32000
   },
   "training": {
-    "learning_rate": 1e-5,
-    "batch_size": 4,
-    "gradient_accumulation_steps": 8,
-    "max_steps": 10000,
-    "warmup_steps": 500,
-    "save_steps": 500,
-    "eval_steps": 250,
-    "mixed_precision": "bf16",
+    "learning_rate": 5e-6,
+    "batch_size": 1,
+    "gradient_accumulation_steps": 32,
+    "max_steps": 1000,
+    "warmup_steps": 100,
+    "save_steps": 100,
+    "eval_steps": 50,
+    "mixed_precision": "fp32",
     "gradient_checkpointing": true
   },
   "data": {
     "tigrinya_dataset": "dataset/train.jsonl",
     "validation_dataset": "dataset/validation.jsonl",
     "english_validation": null,
-    "max_length": 1024,
-    "debug_samples": null
+    "max_length": 512,
+    "debug_samples": 1000
   },
   "hardware": {
     "device": "auto",
     "num_gpus": 1,
-    "dataloader_workers": 4,
+    "dataloader_workers": 0,
     "pin_memory": false
   },
   "knowledge_preservation": {
     "enabled": false,
     "english_weight": 0.0,
     "regularization_strength": 0.0,
-    "validation_frequency": 250
+    "validation_frequency": 100
   },
   "logging": {
-    "log_level": "INFO",
-    "wandb_project": "tigrinya-tinyllama-h100-safe",
-    "tensorboard_dir": "logs/h100_safe",
+    "log_level": "DEBUG",
+    "wandb_project": null,
+    "tensorboard_dir": "logs/h100_debug",
     "save_metrics": true
   }
 }
