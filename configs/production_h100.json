@@ -1,0 +1,43 @@
+{
+  "model": {
+    "checkpoint_path": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+    "tokenizer_path": "tokenizer/",
+    "vocab_size": 32000
+  },
+  "training": {
+    "learning_rate": 2e-5,
+    "batch_size": 8,
+    "gradient_accumulation_steps": 4,
+    "max_steps": 10000,
+    "warmup_steps": 1000,
+    "save_steps": 500,
+    "eval_steps": 100,
+    "mixed_precision": "bf16",
+    "gradient_checkpointing": false
+  },
+  "data": {
+    "tigrinya_dataset": "dataset/train.jsonl",
+    "validation_dataset": "dataset/validation.jsonl",
+    "english_validation": "dataset/english_validation.jsonl",
+    "max_length": 2048,
+    "debug_samples": null
+  },
+  "hardware": {
+    "device": "auto",
+    "num_gpus": 1,
+    "dataloader_workers": 8,
+    "pin_memory": true
+  },
+  "knowledge_preservation": {
+    "enabled": true,
+    "english_weight": 0.3,
+    "regularization_strength": 0.01,
+    "validation_frequency": 100
+  },
+  "logging": {
+    "log_level": "INFO",
+    "wandb_project": "tigrinya-tinyllama-pretraining",
+    "tensorboard_dir": "logs/production_h100",
+    "save_metrics": true
+  }
+}

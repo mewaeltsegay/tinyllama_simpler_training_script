@@ -1,0 +1,10 @@
+{
+  "model": {
+    "checkpoint_path": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+    "tokenizer_path": "tokenizer/"
+  },
+  "data": {
+    "tigrinya_dataset": "dataset/train.jsonl",
+    "validation_dataset": "dataset/validation.jsonl"
+  }
+}

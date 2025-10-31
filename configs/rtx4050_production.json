@@ -1,0 +1,43 @@
+{
+  "model": {
+    "checkpoint_path": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+    "tokenizer_path": "tokenizer/",
+    "vocab_size": 32000
+  },
+  "training": {
+    "learning_rate": 1e-5,
+    "batch_size": 1,
+    "gradient_accumulation_steps": 64,
+    "max_steps": 10000,
+    "warmup_steps": 500,
+    "save_steps": 500,
+    "eval_steps": 250,
+    "mixed_precision": "bf16",
+    "gradient_checkpointing": true
+  },
+  "data": {
+    "tigrinya_dataset": "dataset/train.jsonl",
+    "validation_dataset": "dataset/validation.jsonl",
+    "english_validation": null,
+    "max_length": 1024,
+    "debug_samples": null
+  },
+  "hardware": {
+    "device": "auto",
+    "num_gpus": 1,
+    "dataloader_workers": 2,
+    "pin_memory": true
+  },
+  "knowledge_preservation": {
+    "enabled": false,
+    "english_weight": 0.0,
+    "regularization_strength": 0.0,
+    "validation_frequency": 500
+  },
+  "logging": {
+    "log_level": "INFO",
+    "wandb_project": null,
+    "tensorboard_dir": "logs/rtx4050_production",
+    "save_metrics": true
+  }
+}

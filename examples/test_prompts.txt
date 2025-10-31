@@ -1,0 +1,33 @@
+# Test prompts for Tigrinya TinyLlama inference
+# Lines starting with # are comments and will be ignored
+
+# Tigrinya greetings
+ሰላም! ከመይ ኣሎኻ?
+ሰላም! ከመይ ኣሎኺ?
+ጽቡቕ ለይቲ!
+
+# English greetings
+Hello! How are you?
+Good morning!
+Nice to meet you.
+
+# Mixed language prompts
+Hello, ሰላም!
+How do you say "thank you" in Tigrinya?
+ትግርኛ ቋንቋ
+
+# Conversation starters
+Tell me about Tigrinya language
+What is the weather like today?
+ናይ ሎሚ ኩነታት ኣየር ከመይ እዩ?
+
+# Story beginnings
+Once upon a time
+ሓደ ግዜ
+In a small village
+
+# Questions
+What is your name?
+ስምኻ እንታይ እዩ?
+Where are you from?
+ካበይ ኢኻ?

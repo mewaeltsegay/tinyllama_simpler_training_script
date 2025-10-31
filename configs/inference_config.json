@@ -1,0 +1,26 @@
+{
+  "generation": {
+    "temperature": 1.0,
+    "top_k": 50,
+    "top_p": 0.9,
+    "max_length": 100,
+    "min_length": 1,
+    "repetition_penalty": 1.1,
+    "length_penalty": 1.0,
+    "do_sample": true,
+    "num_return_sequences": 1,
+    "early_stopping": true
+  },
+  "quality_validation": {
+    "enabled": true,
+    "min_length": 5,
+    "max_repetition": 0.3,
+    "min_diversity": 0.3,
+    "min_coherence": 0.4,
+    "max_perplexity": 100.0
+  },
+  "batch_processing": {
+    "batch_size": 4,
+    "max_concurrent": 2
+  }
+}

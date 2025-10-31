@@ -1,0 +1,106 @@
+# Training Artifacts
+/checkpoints/
+/dataset/
+/output/
+/logs/
+/test_logs/
+
+# Model Files
+/models/
+/tokenizer/
+*.bin
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+
+# Data Files
+*.jsonl
+*.json.gz
+*.parquet
+*.arrow
+*.feather
+
+# Experiment Tracking
+/runs/
+/wandb/
+/tensorboard/
+/mlruns/
+
+# Cache and Temporary Files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Environment Files
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# Configuration Overrides
+configs/local_*.json
+configs/personal_*.json
+configs/*_override.json
+
+# Recovery and Debug Files
+recovery_plan.json
+final_config.json
+debug_*.log
+error_*.log
+
+# Large Files
+*.tar
+*.tar.gz
+*.zip
+*.7z
+*.rar
+
+# Kiro IDE
+/.kiro/
+
+# Hugging Face Cache
+/.cache/
+/transformers_cache/
