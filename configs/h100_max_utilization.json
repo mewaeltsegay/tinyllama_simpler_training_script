@@ -13,38 +13,20 @@
     "save_steps": 250,
     "eval_steps": 100,
     "mixed_precision": "bf16",
-    "gradient_checkpointing": true,
-    "max_grad_norm": 1.0,
-    "weight_decay": 0.01,
-    "adam_beta1": 0.9,
-    "adam_beta2": 0.95,
-    "adam_epsilon": 1e-8
+    "gradient_checkpointing": true
   },
   "data": {
     "tigrinya_dataset": "dataset/train.jsonl",
     "validation_dataset": "dataset/validation.jsonl",
     "english_validation": null,
     "max_length": 1024,
-    "debug_samples": null,
-    "shuffle": true,
-    "drop_last": true
+    "debug_samples": null
   },
   "hardware": {
     "device": "auto",
     "num_gpus": 1,
     "dataloader_workers": 16,
-    "pin_memory": true,
-    "prefetch_factor": 8,
-    "persistent_workers": true
-  },
-  "optimization": {
-    "compile_model": false,
-    "use_flash_attention": true,
-    "memory_efficient_attention": true,
-    "fused_optimizer": true,
-    "channels_last": true,
-    "use_deepspeed_zero": false,
-    "activation_checkpointing": true
+    "pin_memory": true
   },
   "knowledge_preservation": {
     "enabled": false,
@@ -56,8 +38,6 @@
     "log_level": "INFO",
     "wandb_project": "tigrinya-tinyllama-h100-max",
     "tensorboard_dir": "logs/h100_max_utilization",
-    "save_metrics": true,
-    "log_memory_usage": true,
-    "profile_memory": true
+    "save_metrics": true
   }
 }
