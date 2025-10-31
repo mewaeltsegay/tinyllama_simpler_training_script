@@ -5,39 +5,39 @@
     "vocab_size": 32000
   },
   "training": {
-    "learning_rate": 2e-5,
-    "batch_size": 8,
-    "gradient_accumulation_steps": 4,
-    "max_steps": 10000,
-    "warmup_steps": 1000,
+    "learning_rate": 3e-5,
+    "batch_size": 1,
+    "gradient_accumulation_steps": 64,
+    "max_steps": 20000,
+    "warmup_steps": 400,
     "save_steps": 500,
-    "eval_steps": 100,
+    "eval_steps": 250,
     "mixed_precision": "bf16",
-    "gradient_checkpointing": false
+    "gradient_checkpointing": true
   },
   "data": {
     "tigrinya_dataset": "dataset/train.jsonl",
     "validation_dataset": "dataset/validation.jsonl",
     "english_validation": null,
-    "max_length": 2048,
+    "max_length": 512,
     "debug_samples": null
   },
   "hardware": {
     "device": "auto",
     "num_gpus": 1,
-    "dataloader_workers": 8,
+    "dataloader_workers": 2,
     "pin_memory": true
   },
   "knowledge_preservation": {
     "enabled": false,
     "english_weight": 0.0,
     "regularization_strength": 0.0,
-    "validation_frequency": 100
+    "validation_frequency": 1000
   },
   "logging": {
     "log_level": "INFO",
-    "wandb_project": "tigrinya-tinyllama-pretraining",
-    "tensorboard_dir": "logs/production_h100",
+    "wandb_project": "tigrinya-only-training",
+    "tensorboard_dir": "logs/tigrinya_only",
     "save_metrics": true
   }
 }

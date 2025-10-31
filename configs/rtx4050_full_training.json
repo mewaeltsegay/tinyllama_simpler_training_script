@@ -29,9 +29,9 @@
     "pin_memory": false
   },
   "knowledge_preservation": {
-    "enabled": true,
-    "english_weight": 0.1,
-    "regularization_strength": 0.001,
+    "enabled": false,
+    "english_weight": 0.0,
+    "regularization_strength": 0.0,
     "validation_frequency": 1000
   },
   "logging": {

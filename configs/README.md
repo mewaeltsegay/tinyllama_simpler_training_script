@@ -34,9 +34,21 @@ python train.py --config configs/rtx4050_full_training.json
 - **Steps**: 50,000 training steps
 - **Sequence**: 512 tokens
 - **Batch**: Effective size 128 (1×128 accumulation)
-- **Knowledge Preservation**: 10% English data
+- **Focus**: Pure Tigrinya training
 - **Time**: ~24 hours
 - **Best for**: Complete fine-tuning
+
+### **4. Tigrinya-Only Optimized - `tigrinya_only.json`**
+```bash
+python train.py --config configs/tigrinya_only.json
+```
+- **Memory**: ~4.5GB VRAM (Tigrinya-optimized)
+- **Steps**: 20,000 training steps
+- **Sequence**: 512 tokens
+- **Batch**: Effective size 64 (1×64 accumulation)
+- **Focus**: 100% Tigrinya specialization
+- **Time**: ~12 hours
+- **Best for**: Pure Tigrinya language learning
 
 ## 🚀 **Quick Start Commands**
 

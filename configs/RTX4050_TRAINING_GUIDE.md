@@ -47,26 +47,43 @@ python train.py --config configs/rtx4050_full_training.json
 
 **Features:**
 - ✅ Complete 50,000 step training
-- ✅ Knowledge preservation with English data
+- ✅ Pure Tigrinya language focus (no English)
 - ✅ Advanced learning rate scheduling
 - ✅ Comprehensive validation and metrics
 - ✅ Production-ready checkpointing
 
 **Memory Usage:** ~5.5GB VRAM
 
+### 4. Tigrinya-Only Optimized (`tigrinya_only.json`)
+**Recommended for: Pure Tigrinya specialization, faster convergence**
+
+```bash
+python train.py --config configs/tigrinya_only.json
+```
+
+**Features:**
+- ✅ 20,000 step focused training
+- ✅ 100% Tigrinya language learning
+- ✅ Optimized learning rate for single language
+- ✅ Faster convergence without knowledge preservation overhead
+- ✅ Memory efficient (no English data processing)
+
+**Memory Usage:** ~4.5GB VRAM
+
 ## 📊 Configuration Comparison
 
-| Feature | Safe | Production | Full Training |
-|---------|------|------------|---------------|
-| Max Steps | 25,000 | 10,000 | 50,000 |
-| Sequence Length | 256 | 1024 | 512 |
-| Batch Size | 1 | 1 | 1 |
-| Gradient Accumulation | 32 | 64 | 128 |
-| Effective Batch Size | 32 | 64 | 128 |
-| Knowledge Preservation | ❌ | ❌ | ✅ (10% English) |
-| Mixed Precision | BF16 | BF16 | BF16 |
-| Memory Usage | ~3.5GB | ~4.8GB | ~5.5GB |
-| Training Time | ~8 hours | ~6 hours | ~24 hours |
+| Feature | Safe | Production | Full Training | Tigrinya-Only |
+|---------|------|------------|---------------|---------------|
+| Max Steps | 25,000 | 10,000 | 50,000 | 20,000 |
+| Sequence Length | 256 | 1024 | 512 | 512 |
+| Batch Size | 1 | 1 | 1 | 1 |
+| Gradient Accumulation | 32 | 64 | 128 | 64 |
+| Effective Batch Size | 32 | 64 | 128 | 64 |
+| Knowledge Preservation | ❌ | ❌ | ❌ | ❌ |
+| Language Focus | Tigrinya | Tigrinya | Tigrinya | Tigrinya-Only |
+| Mixed Precision | BF16 | BF16 | BF16 | BF16 |
+| Memory Usage | ~3.5GB | ~4.8GB | ~5.5GB | ~4.5GB |
+| Training Time | ~8 hours | ~6 hours | ~24 hours | ~12 hours |
 
 ## 🔧 Memory Optimization Features
 
